@@ -16,9 +16,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up PowerShell
-      uses: actions/setup-powershell@v2
-
     - name: Deploy SQL Script
       env:
         SERVER: ${{ secrets.SQL_SERVER }}
