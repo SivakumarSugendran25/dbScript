@@ -16,6 +16,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Print directory structure
+      run: |
+        dir
+        dir dbScript
+        dir dbScript/database
+        dir dbScript/database/StoredProcedure
+
     - name: Deploy SQL Script
       env:
         SERVER: ${{ secrets.SQL_SERVER }}
