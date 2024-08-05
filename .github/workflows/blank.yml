@@ -1,38 +1,19 @@
-name: Deploy SQL Scripts
+name: Find File
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  deploy:
-    runs-on: windows-latest
-
+  find-file:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Print Working Directory
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Listing files:"
-          ls -R
-
-      - name: List Contents of the Target Directory
-        run: |
-          echo "Listing target directory:"
-          cd dbScript/database/StoredProcedure
-          ls -R
-
-      - name: Execute PowerShell Script
-        run: |
-          cd dbScript/database/StoredProcedure
-          pwsh -File export-script.ps1
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: sql-scripts
-          path: dbScript/database/StoredProcedure/
+    - name: Find GetEmployees.sql
+      run: |
+        echo "Searching for GetEmployees.sql in the repository..."
+        find . -name "GetEmployees.sql" || echo "File not found"
