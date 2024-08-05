@@ -1,19 +1,37 @@
-name: Find File
+name: Deploy SQL Script
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  find-file:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: windows-latest
+
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Find GetEmployees.sql
+    - name: Set up PowerShell
+      uses: actions/setup-powershell@v2
+
+    - name: Deploy SQL Script
+      env:
+        SERVER: ${{ secrets.SQL_SERVER }}
+        DATABASE: ${{ secrets.SQL_DATABASE }}
+        USER: ${{ secrets.SQL_USER }}
+        PASSWORD: ${{ secrets.SQL_PASSWORD }}
       run: |
-        echo "Searching for GetEmployees.sql in the repository..."
-        find . -name "GetEmployees.sql" || echo "File not found"
+        $sqlScript = Get-Content -Path 'database/StoredProcedure/GetEmployees.sql' -Raw
+        $connectionString = "Server=$env:SERVER;Database=$env:DATABASE;User Id=$env:USER;Password=$env:PASSWORD;"
+        $connection = New-Object System.Data.SqlClient.SqlConnection
+        $connection.ConnectionString = $connectionString
+        $connection.Open()
+        $command = $connection.CreateCommand()
+        $command.CommandText = $sqlScript
+        $command.ExecuteNonQuery()
+        $connection.Close()
