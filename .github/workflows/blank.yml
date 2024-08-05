@@ -26,13 +26,10 @@ jobs:
           cd dbScript/database/StoredProcedure
           ls -R
 
-      - name: Execute SQL Scripts
+      - name: Execute PowerShell Script
         run: |
           cd dbScript/database/StoredProcedure
-          # Replace this with your actual command to execute the SQL scripts
-          # For example, if you are using a specific SQL client or script
-          echo "Executing SQL scripts..."
-          # your-command-here
+          pwsh -File export-script.ps1
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
