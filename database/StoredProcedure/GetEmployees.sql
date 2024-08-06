@@ -3,6 +3,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT ID, FullName
+    SELECT ID, FullName,Email
     FROM EmployeeTable;
 END
