@@ -8,6 +8,6 @@ BEGIN
     SET NOCOUNT ON;  
   
     UPDATE EmployeeTable  
-    SET Email = @NewEmail  
+    SET FullName = @NewEmail  
     WHERE ID = @EmployeeID;  
 END
