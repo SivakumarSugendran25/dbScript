@@ -44,3 +44,13 @@ jobs:
         }
         
         pwsh -File ./scripts/deploy-sql-scripts.ps1 -Server $env:SERVER -Database $env:DATABASE -User $env:USER -Password $env:PASSWORD -S3BucketName $env:S3_BUCKET -S3BackupPath $env:S3_BACKUP_PATH
+
+    - name: Compress the solution and scripts
+      run: |
+        Compress-Archive -Path ./scripts/* -DestinationPath ./artifact.zip
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: sql-scripts-artifact
+        path: ./artifact.zip
